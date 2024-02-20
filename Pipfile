@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = "*"
 sqlalchemy = "*"
 sqlalchemy-utils = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 
