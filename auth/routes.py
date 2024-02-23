@@ -17,9 +17,9 @@ def root():
 @auth_router.post('/signup', status_code=status.HTTP_201_CREATED)
 async def sign_up(user:UserSignUp):
     if db.query(User).filter(User.email == user.email).first():
-        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='A user with same email already exists')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='A user with same email already exists')
     if db.query(User).filter(User.username == user.username).first():
-        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='A user with same username already exists')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='A user with same username already exists')
     new_user = User(**user.model_dump(exclude='password'), password=get_hashed_password(user.password))
     db.add(new_user)
     db.commit()
