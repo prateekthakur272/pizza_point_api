@@ -3,8 +3,8 @@
 from fastapi import FastAPI
 import uvicorn
 # Routers
-from auth.auth_routes import auth_router
-from orders.order_routes import order_router
+from auth.routes import auth_router
+from orders.routes import order_router
 
 app = FastAPI()
 app.include_router(auth_router)
