@@ -3,9 +3,9 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from fastapi import status
 from database import Session, engine
-from schemas.user_schemas import UserSignUp
+from auth.user_schemas import UserSignUp
 from models import User
-from services.authentication import get_hashed_password
+from auth.authentication import get_hashed_password
 
 auth_router = APIRouter(prefix='/auth', tags=['Authentication'])
 db = Session(bind=engine)
