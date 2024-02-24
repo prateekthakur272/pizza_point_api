@@ -28,7 +28,7 @@ async def send_verification_mail(user:User):
         'username':user.username,
         'exp': datetime.utcnow()+timedelta(minutes=5)
     }
-    token = encode(token_data, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    token:str = encode(token_data, settings.SECRET_KEY, algorithm=settings.ALGORITHM).decode()
     template = _render_temlate('verify_account.html', {'token':token, 'username':user.username})
     
     message = MIMEMultipart('alternative')
