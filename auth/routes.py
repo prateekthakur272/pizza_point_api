@@ -39,6 +39,6 @@ def login(data:OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_d
 async def get_user(user:User = Depends(get_current_user)):
     return user
 
-@auth_router.get('/refresh', response_class=JSONResponse, response_model=TokenResponse, status_code=status.HTTP_401_UNAUTHORIZED)
+@auth_router.get('/refresh', response_class=JSONResponse, response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def refresh_token(Refresh_Token:str = Header()):
     return refresh_access_token(Refresh_Token)
