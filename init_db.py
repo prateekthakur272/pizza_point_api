@@ -1,3 +1,3 @@
 from database import (engine, Base,)
-import models
+from models import User, Order
 Base.metadata.create_all(bind=engine)

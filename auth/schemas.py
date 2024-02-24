@@ -1,12 +1,9 @@
 from pydantic import BaseModel
 
 class UserSignUp(BaseModel):
-    id: int|None = None
     username:str
     email:str
     password:str
-    is_staff: bool|None = None
-    is_active: bool|None = None
     
     class Config:
         from_attributes = True
@@ -15,8 +12,6 @@ class UserSignUp(BaseModel):
                 'username':'prateekthakur',
                 'email':'prateekthakur@example.com',
                 'password':'password@123',
-                'is_staff':False,
-                'is_active':True,
             }
         }
         
@@ -40,8 +35,9 @@ class UserSignIn(BaseModel):
 class UserResponse(BaseModel):
     
     id: int|None = None
-    username:str
-    email:str
+    username:str|None = None
+    email:str|None = None
+    password:str|None = None
     is_staff: bool|None = None
     is_active: bool|None = None
     
@@ -50,3 +46,4 @@ class TokenResponse(BaseModel):
     
     access_token:str
     refresh_token:str
+    type:str = 'Bearer'
