@@ -9,6 +9,7 @@ uvicorn = "*"
 sqlalchemy = "*"
 sqlalchemy-utils = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
+pydantic-settings = "*"
 
 [dev-packages]
 
