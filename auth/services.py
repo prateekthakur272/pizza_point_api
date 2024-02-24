@@ -5,7 +5,7 @@ from fastapi.exceptions import HTTPException
 from fastapi import Depends, status
 from sqlalchemy.orm import Session
 from database import get_db_session
-from auth.utils import generate_access_token, generate_refresh_token, get_token_data
+from auth.utils import generate_token, get_token_data
 
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl='auth/login')
@@ -18,9 +18,9 @@ def _check_access(user:User) -> bool:
 def generate_tokens(user:User, refresh_token:str|None = None) -> TokenResponse:
     # _check_access(user)
     payload = {'username':user.username, 'id':user.id, 'email':user.email}
-    access_token = generate_access_token(payload)
+    access_token = generate_token(payload, is_access=True)
     if not refresh_token:
-        refresh_token = generate_refresh_token(payload)
+        refresh_token = generate_token(payload)
     return TokenResponse(access_token=access_token, refresh_token=refresh_token)
 
 def get_current_user(token:str = Depends(oauth_scheme), db:Session = Depends(get_db_session)):
