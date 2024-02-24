@@ -3,6 +3,7 @@ from settings import get_settings
 from datetime import datetime, timedelta
 from jwt import encode, decode, PyJWTError
 
+
 password_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 settings = get_settings()
 
@@ -27,5 +28,5 @@ def get_token_data(token:str) -> dict:
         payload = decode(token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
     except PyJWTError:
-        return None
+        return {}
     

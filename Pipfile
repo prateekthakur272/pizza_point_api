@@ -12,6 +12,7 @@ passlib = {extras = ["bcrypt"], version = "*"}
 pydantic-settings = "*"
 fastapi-jwt-auth = "*"
 pyjwt = "*"
+python-multipart = "*"
 
 [dev-packages]
 
