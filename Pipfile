@@ -13,6 +13,8 @@ pydantic-settings = "*"
 fastapi-jwt-auth = "*"
 pyjwt = "*"
 python-multipart = "*"
+python-dotenv = "*"
+jinja2 = "*"
 
 [dev-packages]
 
