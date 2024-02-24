@@ -5,6 +5,8 @@ from email.mime.base import MIMEBase
 from smtplib import SMTP_SSL
 from jinja2 import Environment, FileSystemLoader
 from models import User
+from jwt import encode
+from datetime import datetime, timedelta
 
 
 settings = get_settings()
@@ -19,8 +21,14 @@ async def send_mail(message:MIMEBase):
         smtp.login(settings.EMAIL, settings.PASSWORD)
         smtp.send_message(message)
         
-async def send_verification_mail(user:User, token:str):
+async def send_verification_mail(user:User):
 
+    token_data = {
+        'id':user.id,
+        'username':user.username,
+        'exp': datetime.utcnow()+timedelta(minutes=5)
+    }
+    token = encode(token_data, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     template = _render_temlate('verify_account.html', {'token':token, 'username':user.username})
     
     message = MIMEMultipart('alternative')

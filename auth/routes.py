@@ -5,11 +5,11 @@ from fastapi import Depends, Header, status
 from fastapi.security import OAuth2PasswordRequestForm
 from database import get_db_session
 from sqlalchemy.orm import Session
-from auth.schemas import TokenResponse, UserResponse, UserSignUp, UserSignIn
+from auth.schemas import TokenResponse, UserResponse, UserSignUp
 from models import User
-from auth.utils import get_hashed_password, verify_password, get_token_data
+from auth.utils import get_hashed_password, verify_password
 from auth.services import generate_tokens, get_current_user, refresh_access_token
-
+from mailer.mailer import send_verification_mail
 
 auth_router = APIRouter(prefix='/auth', tags=['Authentication'])
 
@@ -22,6 +22,8 @@ async def sign_up(user:UserSignUp, db:Session = Depends(get_db_session)):
     new_user = User(**user.model_dump(exclude='password'), password=get_hashed_password(user.password))
     db.add(new_user)
     db.commit()
+    db.refresh(new_user)
+    await send_verification_mail(new_user)
     return JSONResponse({'message':f'user created with email:{user.email}, click on verification link in email to verify account'})
 
 @auth_router.post('/login', response_class=JSONResponse, response_model=TokenResponse, response_model_exclude_none=True, status_code=status.HTTP_200_OK)

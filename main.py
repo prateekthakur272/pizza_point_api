@@ -3,11 +3,14 @@
 from fastapi import FastAPI
 import uvicorn
 from database import engine, Base
+from fastapi.templating import Jinja2Templates
 # Routers
 from auth.routes import auth_router
 from orders.routes import order_router
 
 app = FastAPI()
+templates = Jinja2Templates('templates')
+
 app.include_router(auth_router)
 app.include_router(order_router)
 
