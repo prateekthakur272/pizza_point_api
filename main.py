@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 from auth.routes import auth_router
 from orders.routes import order_router
 
-app = FastAPI()
+app = FastAPI(title='Pizza-Point', version='1.0.0')
 templates = Jinja2Templates('templates')
 
 app.include_router(auth_router)
