@@ -9,13 +9,9 @@ from database import get_db_session
 from sqlalchemy.orm import Session
 
 
-order_router = APIRouter(prefix='/order', tags=['Order'])
+order_router = APIRouter(prefix='/orders', tags=['Order'])
 
-@order_router.get('/')
-def root(user:User = Depends(get_current_user)):
-    return {'message':f'hello {user.username}'}
-
-@order_router.post('/orders', response_class=JSONResponse, status_code=status.HTTP_201_CREATED)
+@order_router.post('/', response_class=JSONResponse, status_code=status.HTTP_201_CREATED)
 def place_order(order:OrderModel, user:User = Depends(get_current_user), db:Session = Depends(get_db_session)):
     new_order = Order(**order.model_dump(exclude_none=False))
     new_order.users = user
@@ -23,3 +19,9 @@ def place_order(order:OrderModel, user:User = Depends(get_current_user), db:Sess
     db.commit()
     db.refresh(new_order)
     return new_order
+
+@order_router.get('/', status_code=status.HTTP_200_OK, response_class=JSONResponse,)
+def get_orders(user:User = Depends(get_current_user), db:Session = Depends(get_db_session)):
+    if user.is_staff:
+        return db.query(Order).all()
+    return db.query(Order).filter(Order.user_id == user.id).all()
